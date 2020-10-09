@@ -1,7 +1,7 @@
 package lk.ijse.dep.pos.business.custom.impl;
 
 import lk.ijse.dep.pos.business.custom.CustomerBO;
-import lk.ijse.dep.pos.dao.custom.CustomerDAO;
+import lk.ijse.dep.pos.repository.custom.CustomerRepository;
 import lk.ijse.dep.pos.entity.Customer;
 import lk.ijse.dep.pos.util.CustomerTM;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.List;
 public class CustomerBOImpl implements CustomerBO {
 
     @Autowired
-    private CustomerDAO customerDAO;
+    private CustomerRepository customerDAO;
 
     @Transactional(readOnly = true)
     public List<CustomerTM> getAllCustomers() throws Exception {

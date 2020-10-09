@@ -1,10 +1,10 @@
 package lk.ijse.dep.pos.business.custom.impl;
 
 import lk.ijse.dep.pos.business.custom.OrderBO;
-import lk.ijse.dep.pos.dao.custom.ItemDAO;
-import lk.ijse.dep.pos.dao.custom.OrderDAO;
-import lk.ijse.dep.pos.dao.custom.OrderDetailDAO;
-import lk.ijse.dep.pos.dao.custom.QueryDAO;
+import lk.ijse.dep.pos.repository.custom.ItemRepository;
+import lk.ijse.dep.pos.repository.custom.OrderRepository;
+import lk.ijse.dep.pos.repository.custom.OrderDetailRepository;
+import lk.ijse.dep.pos.repository.custom.QueryRepository;
 import lk.ijse.dep.pos.entity.*;
 import lk.ijse.dep.pos.util.CustomerTM;
 import lk.ijse.dep.pos.util.SearchOrderTM;
@@ -22,26 +22,26 @@ import java.util.List;
 @Transactional
 public class OrderBOImpl implements OrderBO {
     @Autowired
-    private OrderDAO orderDAO;
+    private OrderRepository orderRepository;
     @Autowired
-    private OrderDetailDAO orderDetailDAO;
+    private OrderDetailRepository orderDetailDAO;
     @Autowired
-    private ItemDAO itemDAO;
+    private ItemRepository itemRepository;
     @Autowired
-    private QueryDAO queryDAO;
+    private QueryRepository queryDAO;
 
     public void saveOrder(String id, Date date, CustomerTM customer) throws Exception {
-        orderDAO.save(new Order(id, date, new Customer(customer.getCustomerId(), customer.getCustomerName(), customer.getCustomerAddress())));
+        orderRepository.save(new Order(id, date, new Customer(customer.getCustomerId(), customer.getCustomerName(), customer.getCustomerAddress())));
     }
 
     public void saveOrderDetail(String orderId, String itemCode, int qty, double unitPrice) throws Exception {
         orderDetailDAO.save(new OrderDetail(orderId, itemCode, qty, BigDecimal.valueOf(unitPrice)));
-        Item item = itemDAO.find(itemCode);
+        Item item = itemRepository.find(itemCode);
         item.setQtyOnHand(item.getQtyOnHand() - qty);
     }
 
     public String generateNewOrderId() throws SQLException {
-        String lastOrderId = orderDAO.lastOrderId();
+        String lastOrderId = orderRepository.lastOrderId();
 
         int lastNumber = Integer.parseInt(lastOrderId.substring(2, 5));
         if (lastNumber <= 0) {
