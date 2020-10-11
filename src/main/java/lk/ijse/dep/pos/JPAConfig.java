@@ -23,7 +23,7 @@ import java.util.Properties;
 
 @Configuration
 @PropertySource("classpath:application.properties")
-@EnableJpaRepositories
+@EnableJpaRepositories("lk.ijse.dep.pos.repository")
 @EnableTransactionManagement
 public class JPAConfig {
 
@@ -36,7 +36,7 @@ public class JPAConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManager(DataSource dataSource){
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource){
         LocalContainerEntityManagerFactoryBean lcemf = new LocalContainerEntityManagerFactoryBean();
         lcemf.setDataSource(dataSource);
 //        lcemf.setJpaProperties(jpaProperties());

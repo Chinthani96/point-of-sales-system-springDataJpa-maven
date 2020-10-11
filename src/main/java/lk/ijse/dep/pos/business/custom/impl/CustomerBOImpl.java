@@ -17,13 +17,13 @@ import java.util.List;
 public class CustomerBOImpl implements CustomerBO {
 
     @Autowired
-    private CustomerRepository customerDAO;
+    private CustomerRepository customerRepository;
 
     @Transactional(readOnly = true)
     public List<CustomerTM> getAllCustomers() throws Exception {
         List<Customer> allCustomers = null;
         List<CustomerTM> customerTMS = new ArrayList<>();
-            allCustomers = customerDAO.findAll();
+            allCustomers = customerRepository.findAll();
         for (Customer customer : allCustomers) {
             customerTMS.add(new CustomerTM(customer.getId(), customer.getName(), customer.getAddress()));
         }
@@ -31,21 +31,21 @@ public class CustomerBOImpl implements CustomerBO {
     }
 
     public void saveCustomer(String id, String name, String address) throws Exception {
-            customerDAO.save(new Customer(id, name, address));
+            customerRepository.save(new Customer(id, name, address));
 
     }
 
     public void updateCustomer(String id, String name, String address) throws Exception {
-            customerDAO.update(new Customer(id, name, address));
+            customerRepository.save(new Customer(id, name, address));
     }
 
     public void deleteCustomer(String id) throws Exception {
-            customerDAO.delete(id);
+            customerRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
     public String generateNewCustomerId() throws SQLException {
-            String lastCustomerId = customerDAO.getLastCustomerId();
+            String lastCustomerId = customerRepository.getFirstLastCustomerIdByOrderByIdDesc().getId();
             int lastNumber = Integer.parseInt(lastCustomerId.substring(1, 4));
             if (lastNumber == 0) {
                 return "C001";

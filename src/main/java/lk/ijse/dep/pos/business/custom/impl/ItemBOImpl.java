@@ -36,16 +36,16 @@ public class ItemBOImpl implements ItemBO {
     }
 
     public void updateItem(String code, String description, double unitPrice, int qtyOnHand) throws Exception {
-        itemRepository.update(new Item(code, description, BigDecimal.valueOf(unitPrice), qtyOnHand));
+        itemRepository.save(new Item(code, description, BigDecimal.valueOf(unitPrice), qtyOnHand));
     }
 
     public void deleteItem(String code) throws Exception {
-        itemRepository.delete(code);
+        itemRepository.deleteById(code);
     }
 
     @Transactional(readOnly = true)
     public String generateNewItemId() throws SQLException {
-        String lastItemId = itemRepository.getLastItemId();
+        String lastItemId = itemRepository.getFirstLastItemCodeByOrderByCodeDesc().getCode();
         int lastNumber = Integer.parseInt(lastItemId.substring(1, 4));
         if (lastNumber == 0) {
             lastNumber++;

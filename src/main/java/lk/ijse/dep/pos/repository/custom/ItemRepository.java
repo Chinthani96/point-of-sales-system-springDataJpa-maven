@@ -1,9 +1,10 @@
 package lk.ijse.dep.pos.repository.custom;
 
 import lk.ijse.dep.pos.entity.Item;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.sql.SQLException;
 
-public interface ItemRepository extends CrudDAO<Item,String> {
-    String getLastItemId() throws SQLException;
+public interface ItemRepository extends JpaRepository<Item,String> {
+    Item getFirstLastItemCodeByOrderByCodeDesc() throws SQLException;
 }
